@@ -3,14 +3,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-/**
- * Bring store on patient oldSamples from the diagnosis machine to the laboratory with enough carriedMoleculeBag to produce medicine!
- **/
 class Player {
 
     public static void main(String args[]) {
-        Integer MOLECULE_QUICK_WIN = 2;
-
         Blackboard blackboard = new Blackboard();
         Scanner in = new Scanner(System.in);
 
@@ -33,48 +28,50 @@ class Player {
 
         ABehaviourTree<Blackboard> behaviourTree = new ABehaviourTree.Sequence<>("Code4Life",
                 new ABehaviourTree.Execute("ReadPlayerState", (bb) -> {
-                    bb.player.target = in.next();
-                    bb.player.eta = in.nextInt();
-                    bb.player.score = in.nextInt();
-                    bb.player.storageA = in.nextInt();
-                    bb.player.storageB = in.nextInt();
-                    bb.player.storageC = in.nextInt();
-                    bb.player.storageD = in.nextInt();
-                    bb.player.storageE = in.nextInt();
-                    bb.player.expertiseA = in.nextInt();
-                    bb.player.expertiseB = in.nextInt();
-                    bb.player.expertiseC = in.nextInt();
-                    bb.player.expertiseD = in.nextInt();
-                    bb.player.expertiseE = in.nextInt();
+                    String target = in.next();
+                    Integer eta = in.nextInt();
+                    Integer score = in.nextInt();
+                    Integer storageA = in.nextInt();
+                    Integer storageB = in.nextInt();
+                    Integer storageC = in.nextInt();
+                    Integer storageD = in.nextInt();
+                    Integer storageE = in.nextInt();
+                    Integer expertiseA = in.nextInt();
+                    Integer expertiseB = in.nextInt();
+                    Integer expertiseC = in.nextInt();
+                    Integer expertiseD = in.nextInt();
+                    Integer expertiseE = in.nextInt();
 
-                    bb.playerAgent.target = bb.player.target;
-                    bb.playerAgent.eta = bb.player.eta;
-                    bb.playerAgent.score = bb.player.score;
-                    bb.playerAgent.validateStorageBags(MoleculeType.A, bb.player.storageA);
-                    bb.playerAgent.validateStorageBags(MoleculeType.B, bb.player.storageB);
-                    bb.playerAgent.validateStorageBags(MoleculeType.C, bb.player.storageC);
-                    bb.playerAgent.validateStorageBags(MoleculeType.D, bb.player.storageD);
-                    bb.playerAgent.validateStorageBags(MoleculeType.E, bb.player.storageE);
-                    bb.playerAgent.validateExpertiseBag(MoleculeType.A, bb.player.expertiseA);
-                    bb.playerAgent.validateExpertiseBag(MoleculeType.B, bb.player.expertiseB);
-                    bb.playerAgent.validateExpertiseBag(MoleculeType.C, bb.player.expertiseC);
-                    bb.playerAgent.validateExpertiseBag(MoleculeType.D, bb.player.expertiseD);
-                    bb.playerAgent.validateExpertiseBag(MoleculeType.E, bb.player.expertiseE);
+                    bb.playerAgent.target = target;
+                    bb.playerAgent.eta = eta;
+                    bb.playerAgent.score = score;
+                    bb.playerAgent.validateStorageBags(MoleculeType.A, storageA);
+                    bb.playerAgent.validateStorageBags(MoleculeType.B, storageB);
+                    bb.playerAgent.validateStorageBags(MoleculeType.C, storageC);
+                    bb.playerAgent.validateStorageBags(MoleculeType.D, storageD);
+                    bb.playerAgent.validateStorageBags(MoleculeType.E, storageE);
+                    bb.playerAgent.validateExpertiseBag(MoleculeType.A, expertiseA);
+                    bb.playerAgent.validateExpertiseBag(MoleculeType.B, expertiseB);
+                    bb.playerAgent.validateExpertiseBag(MoleculeType.C, expertiseC);
+                    bb.playerAgent.validateExpertiseBag(MoleculeType.D, expertiseD);
+                    bb.playerAgent.validateExpertiseBag(MoleculeType.E, expertiseE);
                 }),
                 new ABehaviourTree.Execute("ReadEnemyState", (bb) -> {
-                    bb.enemy.target = in.next();
-                    bb.enemy.eta = in.nextInt();
-                    bb.enemy.score = in.nextInt();
-                    bb.enemy.storageA = in.nextInt();
-                    bb.enemy.storageB = in.nextInt();
-                    bb.enemy.storageC = in.nextInt();
-                    bb.enemy.storageD = in.nextInt();
-                    bb.enemy.storageE = in.nextInt();
-                    bb.enemy.expertiseA = in.nextInt();
-                    bb.enemy.expertiseB = in.nextInt();
-                    bb.enemy.expertiseC = in.nextInt();
-                    bb.enemy.expertiseD = in.nextInt();
-                    bb.enemy.expertiseE = in.nextInt();
+                    String target = in.next();
+                    Integer eta = in.nextInt();
+                    Integer score = in.nextInt();
+                    Integer storageA = in.nextInt();
+                    Integer storageB = in.nextInt();
+                    Integer storageC = in.nextInt();
+                    Integer storageD = in.nextInt();
+                    Integer storageE = in.nextInt();
+                    Integer expertiseA = in.nextInt();
+                    Integer expertiseB = in.nextInt();
+                    Integer expertiseC = in.nextInt();
+                    Integer expertiseD = in.nextInt();
+                    Integer expertiseE = in.nextInt();
+
+                    bb.enemyAgent.target = target;
                 }),
                 new ABehaviourTree.Execute("ReadMoleculeState", (bb) -> {
                     Integer availableA = in.nextInt();
@@ -96,51 +93,43 @@ class Player {
                     bb.moleculePoolMax.computeIfAbsent(MoleculeType.E, k -> new AtomicInteger(availableE));
                 }),
                 new ABehaviourTree.Execute("ReadSampleState", (bb) -> {
-                    bb.sampleCount = in.nextInt();
-                    for (int i = 0; i < bb.sampleCount; i++) {
-                        OldSample oldSample = new OldSample(bb);
-                        oldSample.id = in.nextInt();
-                        oldSample.carriedBy = in.nextInt();
-                        oldSample.rank = in.nextInt();
-                        oldSample.expertiseGain = in.next();
-                        oldSample.health = in.nextInt();
-                        oldSample.costA = in.nextInt();
-                        oldSample.costB = in.nextInt();
-                        oldSample.costC = in.nextInt();
-                        oldSample.costD = in.nextInt();
-                        oldSample.costE = in.nextInt();
+                    Integer sampleCount = in.nextInt();
+                    for (int i = 0; i < sampleCount; i++) {
 
-                        switch (oldSample.carriedBy) {
+                        Integer id = in.nextInt();
+                        Integer carriedBy = in.nextInt();
+                        Integer rank = in.nextInt();
+                        String expertiseGain = in.next();
+                        Integer health = in.nextInt();
+                        Integer costA = in.nextInt();
+                        Integer costB = in.nextInt();
+                        Integer costC = in.nextInt();
+                        Integer costD = in.nextInt();
+                        Integer costE = in.nextInt();
+
+                        Sample sample = new Sample(id, rank, health, MoleculeType.valueOf(expertiseGain.toUpperCase()));
+                        sample.requiredMoleculeBag.put(MoleculeType.A, new AtomicInteger(costA));
+                        sample.requiredMoleculeBag.put(MoleculeType.B, new AtomicInteger(costB));
+                        sample.requiredMoleculeBag.put(MoleculeType.C, new AtomicInteger(costC));
+                        sample.requiredMoleculeBag.put(MoleculeType.D, new AtomicInteger(costD));
+                        sample.requiredMoleculeBag.put(MoleculeType.E, new AtomicInteger(costE));
+                        switch (carriedBy) {
                             case -1:
-                                oldSample.owner = bb.player;
-                                bb.cloud.add(oldSample);
+                                bb.cloudStorage.storeSampleIfAbsent(sample);
+                                bb.enemyAgent.removeSampleIfPresent(sample);
                                 break;
                             case 0:
-                                oldSample.owner = bb.player;
-                                bb.player.oldSamples.add(oldSample);
+                                bb.playerAgent.assertCarryingSample(sample);
+                                bb.cloudStorage.assertNotStoringSample(sample);
+                                bb.enemyAgent.assertNotCarryingSample(sample);
                                 break;
                             case 1:
-                                oldSample.owner = bb.enemy;
-                                bb.enemy.oldSamples.add(oldSample);
+                                bb.enemyAgent.carrySampleIfAbsent(sample);
+                                bb.cloudStorage.removeSampleIfPresent(sample);
                                 break;
                             default:
                                 throw new RuntimeException("unhandled carrier");
                         }
-                    }
-
-                    bb.player.oldSamples.sort(Comparator.comparingInt(OldSample::remaining));
-                    for (OldSample oldSample : bb.player.oldSamples) {
-                        oldSample.moleculesA = Math.min(oldSample.costA, bb.player.storageA);
-                        oldSample.moleculesB = Math.min(oldSample.costB, bb.player.storageB);
-                        oldSample.moleculesC = Math.min(oldSample.costC, bb.player.storageC);
-                        oldSample.moleculesD = Math.min(oldSample.costD, bb.player.storageD);
-                        oldSample.moleculesE = Math.min(oldSample.costE, bb.player.storageE);
-
-                        bb.player.storageA -= oldSample.moleculesA;
-                        bb.player.storageB -= oldSample.moleculesB;
-                        bb.player.storageC -= oldSample.moleculesC;
-                        bb.player.storageD -= oldSample.moleculesD;
-                        bb.player.storageE -= oldSample.moleculesE;
                     }
                 }),
                 new ABehaviourTree.Selector("SelectAction",
@@ -153,7 +142,7 @@ class Player {
                                 new ABehaviourTree.Execute("gotoSamples", bb -> System.out.println("GOTO SAMPLES"))
                         ),
                         new ABehaviourTree.Sequence("WhilstAtSamples",
-                                new ABehaviourTree.Guard("isAtSamples", bb -> bb.player.target.equals("SAMPLES")),
+                                new ABehaviourTree.Guard("isAtSamples", bb -> bb.playerAgent.target.equals("SAMPLES")),
                                 new ABehaviourTree.Selector("SelectAction",
                                         new ABehaviourTree.Sequence("CollectSamples",
                                                 new ABehaviourTree.Guard("canCarryMoreSamples", bb -> bb.playerAgent.canCarryMoreSamples()),
@@ -169,13 +158,13 @@ class Player {
                                                         new ABehaviourTree.Sequence("ConsiderRank2",
                                                                 new ABehaviourTree.Selector("Rank2Conditions",
                                                                         new ABehaviourTree.Guard("enoughExpertiseForRank2", bb -> 2 <=
-                                                                                (bb.player.expertiseA >= 2 ? 1 : 0) +
-                                                                                        (bb.player.expertiseB >= 2 ? 1 : 0) +
-                                                                                        (bb.player.expertiseC >= 2 ? 1 : 0) +
-                                                                                        (bb.player.expertiseD >= 2 ? 1 : 0) +
-                                                                                        (bb.player.expertiseE >= 2 ? 1 : 0)
+                                                                                (bb.playerAgent.expertise.get(MoleculeType.A).get() >= 2 ? 1 : 0) +
+                                                                                        (bb.playerAgent.expertise.get(MoleculeType.B).get() >= 2 ? 1 : 0) +
+                                                                                        (bb.playerAgent.expertise.get(MoleculeType.C).get() >= 2 ? 1 : 0) +
+                                                                                        (bb.playerAgent.expertise.get(MoleculeType.D).get() >= 2 ? 1 : 0) +
+                                                                                        (bb.playerAgent.expertise.get(MoleculeType.E).get() >= 2 ? 1 : 0)
                                                                         ),
-                                                                        new ABehaviourTree.Guard("has2Rank1Samples", bb -> bb.player.oldSamples.stream().filter(s -> s.rank == 1).count() == 2)
+                                                                        new ABehaviourTree.Guard("has2Rank1Samples", bb -> bb.playerAgent.carriedSamples().stream().filter(s -> s.rank == 1).count() == 2)
                                                                 ),
                                                                 new ABehaviourTree.Store("samples:collect-sample-rank", bb -> Optional.of("2"))
                                                         ),
@@ -188,57 +177,39 @@ class Player {
                                         ),
                                         new ABehaviourTree.Selector("LeaveSamples",
                                                 new ABehaviourTree.Sequence("GoToDiagnosis",
-                                                        new ABehaviourTree.Guard("isCarryingUndiagnosedSamples", bb -> bb.player.oldSamples.stream().anyMatch(oldSample -> oldSample.cost() < 0)),
+                                                        new ABehaviourTree.Guard("isCarryingUndiagnosedSamples", bb -> !bb.playerAgent.undiagnosedSamples.isEmpty()),
                                                         new ABehaviourTree.Execute("gotoDiagnosis", bb -> System.out.println("GOTO DIAGNOSIS"))
                                                 ),
                                                 new ABehaviourTree.Sequence("GoToMolecules",
-                                                        new ABehaviourTree.Guard("doesAnySampleNeedMolecules", bb -> bb.player.oldSamples.stream().anyMatch(s -> !s.isComplete())),
+                                                        new ABehaviourTree.Guard("areAnySamplesIncomplete", bb -> !bb.playerAgent.incompleteSamples.isEmpty()),
                                                         new ABehaviourTree.Execute("gotoMolecules", bb -> System.out.println("GOTO MOLECULES"))
                                                 ),
                                                 new ABehaviourTree.Sequence("GoToLaboratory",
-                                                        new ABehaviourTree.Guard("ifThereAreCompleteSamples", bb -> bb.player.oldSamples.stream().anyMatch(OldSample::isComplete)),
+                                                        new ABehaviourTree.Guard("ifThereAreCompleteSamples", bb -> !bb.playerAgent.completeSamples.isEmpty()),
                                                         new ABehaviourTree.Execute("gotoLaboratory", bb -> System.out.println("GOTO LABORATORY"))
                                                 )
                                         )
                                 )
                         ),
                         new ABehaviourTree.Sequence("AtDiagnosis",
-                                new ABehaviourTree.Guard("isAtDiagnosis", bb -> bb.player.target.equals("DIAGNOSIS")),
+                                new ABehaviourTree.Guard("isAtDiagnosis", bb -> bb.playerAgent.target.equals("DIAGNOSIS")),
                                 new ABehaviourTree.Selector("SelectDiagnosisAction",
                                         new ABehaviourTree.Sequence("DiagnoseUndiagnosedSamples",
-                                                new ABehaviourTree.Guard("isCarryingUndiagnosedSamples", bb -> bb.player.oldSamples.stream().anyMatch(oldSample -> oldSample.cost() < 0)),
-                                                new ABehaviourTree.Store("diagnosis:undiagnosed-sample", bb -> bb.player.oldSamples.stream().filter(s -> s.cost() < 0).map(s -> s.id).findAny()),
+                                                new ABehaviourTree.Guard("isCarryingUndiagnosedSamples", bb -> !bb.playerAgent.undiagnosedSamples.isEmpty()),
                                                 new ABehaviourTree.Guard("isSampleIdentified", bb -> !Objects.isNull(bb.store.get("diagnosis:undiagnosed-sample"))),
                                                 new ABehaviourTree.Execute("diagnoseSample", bb -> System.out.println(String.format("CONNECT %s", ((Sample) bb.store.get("diagnosis:undiagnosed-sample")).id)))
                                         ),
-                                        new ABehaviourTree.Sequence("UploadAllSamplesIfCannotReleaseMolecules",
-                                                new ABehaviourTree.Guard("cannotCarryMoreMolecules", bb -> !bb.playerAgent.canCarryMoreMolecules()),
-                                                new ABehaviourTree.Guard("canSamplesBeCompletedWithStoredMolecules", bb -> bb.player.oldSamples.stream().noneMatch(OldSample::isComplete)),
-                                                new ABehaviourTree.Store("<sample-id>", bb -> bb.player.oldSamples.stream().findAny()),
-                                                new ABehaviourTree.Guard("isSampleIdentified", bb -> bb.store.containsKey("<sample-id>") && bb.store.get("<sample-id>") != null),
-                                                new ABehaviourTree.Execute("UploadSample", bb -> System.out.println(String.format("CONNECT %s", ((OldSample) bb.store.get("<sample-id>")).id)))
-                                        ),
-                                        new ABehaviourTree.Sequence("DownloadQuickWinSamples",
-                                                new ABehaviourTree.Guard("isSpaceForSamples", bb -> bb.player.oldSamples.size() < 3),
-                                                new ABehaviourTree.Store("<sample-id>", bb -> bb.cloud.stream()
-                                                        .sorted(Comparator.<OldSample>comparingInt(s -> s.rank).reversed())
-                                                        .filter(s -> s.remaining() < MOLECULE_QUICK_WIN)
-                                                        .map(s -> s.id).findAny()
-                                                ),
-                                                new ABehaviourTree.Guard("isSampleIdentified", bb -> bb.store.containsKey("<sample-id>") && bb.store.get("<sample-id>") != null),
-                                                new ABehaviourTree.Execute("UploadSample", bb -> System.out.println(String.format("CONNECT %s", bb.store.get("<sample-id>"))))
-                                        ),
                                         new ABehaviourTree.Selector("LeaveDiagnosis",
                                                 new ABehaviourTree.Sequence("GoToSamples",
-                                                        new ABehaviourTree.Guard("notCarryingSamples", bb -> bb.player.oldSamples.isEmpty()),
+                                                        new ABehaviourTree.Guard("notCarryingSamples", bb -> bb.playerAgent.carriedSamples().isEmpty()),
                                                         new ABehaviourTree.Execute("ExecuteGoto", bb -> System.out.println("GOTO SAMPLES"))
                                                 ),
                                                 new ABehaviourTree.Sequence("GoToLaboratory",
-                                                        new ABehaviourTree.Guard("ifThereAreCompleteSamples", bb -> bb.player.oldSamples.stream().anyMatch(OldSample::isComplete)),
+                                                        new ABehaviourTree.Guard("ifThereAreCompleteSamples", bb -> !bb.playerAgent.completeSamples.isEmpty()),
                                                         new ABehaviourTree.Execute("ExecuteGoto", bb -> System.out.println("GOTO LABORATORY"))
                                                 ),
                                                 new ABehaviourTree.Sequence("GoToMolecules",
-                                                        new ABehaviourTree.Guard("doesAnySampleNeedMolecules", bb -> bb.player.oldSamples.stream().anyMatch(s -> !s.isComplete())),
+                                                        new ABehaviourTree.Guard("areAnySamplesIncomplete", bb -> !bb.playerAgent.incompleteSamples.isEmpty()),
                                                         new ABehaviourTree.Execute("ExecuteGoto", bb -> System.out.println("GOTO MOLECULES"))
                                                 )
                                         )
@@ -246,52 +217,11 @@ class Player {
                         ),
 
                         new ABehaviourTree.Sequence("AtMolecules",
-                                new ABehaviourTree.Guard("isAtMolecules", bb -> bb.player.target.equals("MOLECULES")),
+                                new ABehaviourTree.Guard("isAtMolecules", bb -> bb.playerAgent.target.equals("MOLECULES")),
                                 new ABehaviourTree.Selector("SelectMoleculesAction",
                                         new ABehaviourTree.Sequence("CollectMolecules",
                                                 new ABehaviourTree.Guard("isThereSpaceForMolecules", bb -> bb.playerAgent.canCarryMoreMolecules()),
-                                                new ABehaviourTree.Guard("doesAnySampleNeedMolecules", bb -> bb.player.oldSamples.stream().anyMatch(s -> s.remaining() > 0)),
-                                                new ABehaviourTree.UntilFail<>("EmptyStack", new ABehaviourTree.Pop()),
-                                                new ABehaviourTree.UntilFail<>("AddPlayerSamplesNeedingMoleculesToStack",
-                                                        new ABehaviourTree.Push(bb -> bb.player.oldSamples.stream()
-                                                                .filter(oldSample -> oldSample.remaining() > 0)
-                                                                .filter(oldSample -> !bb.stack.contains(oldSample))
-                                                                .max(Comparator.comparingInt(OldSample::remaining))
-                                                        )
-                                                ),
-                                                new ABehaviourTree.UntilFail<>("PopSamplesUntilFail",
-                                                        new ABehaviourTree.Invert<>("InvertIdentify",
-                                                                new ABehaviourTree.Selector<>("IdentifyMolecules",
-                                                                        new ABehaviourTree.Guard("IsSampleStackEmpty", bb -> bb.stack.isEmpty()),
-                                                                        new ABehaviourTree.Sequence("CheckA",
-                                                                                new ABehaviourTree.Guard("doesSampleRequireA", bb -> ((OldSample) bb.stack.peek()).remainingA() > 0),
-                                                                                new ABehaviourTree.Guard("isAAvailable", bb -> bb.moleculePool.get(MoleculeType.A).get() > 0),
-                                                                                new ABehaviourTree.Store("<molecule-id>", (bb) -> Optional.of(MoleculeType.A))
-                                                                        ),
-                                                                        new ABehaviourTree.Sequence("CheckB",
-                                                                                new ABehaviourTree.Guard("doesSampleRequireB", bb -> ((OldSample) bb.stack.peek()).remainingB() > 0),
-                                                                                new ABehaviourTree.Guard("isBAvailable", bb -> bb.moleculePool.get(MoleculeType.B).get() > 0),
-                                                                                new ABehaviourTree.Store("<molecule-id>", (bb) -> Optional.of(MoleculeType.B))
-                                                                        ),
-                                                                        new ABehaviourTree.Sequence("CheckC",
-                                                                                new ABehaviourTree.Guard("doesSampleRequireC", bb -> ((OldSample) bb.stack.peek()).remainingC() > 0),
-                                                                                new ABehaviourTree.Guard("isCAvailable", bb -> bb.moleculePool.get(MoleculeType.C).get() > 0),
-                                                                                new ABehaviourTree.Store("<molecule-id>", (bb) -> Optional.of(MoleculeType.C))
-                                                                        ),
-                                                                        new ABehaviourTree.Sequence("CheckD",
-                                                                                new ABehaviourTree.Guard("doesSampleRequireD", bb -> ((OldSample) bb.stack.peek()).remainingD() > 0),
-                                                                                new ABehaviourTree.Guard("isDAvailable", bb -> bb.moleculePool.get(MoleculeType.D).get() > 0),
-                                                                                new ABehaviourTree.Store("<molecule-id>", (bb) -> Optional.of(MoleculeType.D))
-                                                                        ),
-                                                                        new ABehaviourTree.Sequence("CheckE",
-                                                                                new ABehaviourTree.Guard("doesSampleRequireE", bb -> ((OldSample) bb.stack.peek()).remainingE() > 0),
-                                                                                new ABehaviourTree.Guard("isEAvailable", bb -> bb.moleculePool.get(MoleculeType.E).get() > 0),
-                                                                                new ABehaviourTree.Store("<molecule-id>", (bb) -> Optional.of(MoleculeType.E))
-                                                                        ),
-                                                                        new ABehaviourTree.Invert<>("InvertPop", new ABehaviourTree.Pop())
-                                                                )
-                                                        )
-                                                ),
+                                                new ABehaviourTree.Guard("areAnySamplesIncomplete", bb -> !bb.playerAgent.incompleteSamples.isEmpty()),
                                                 new ABehaviourTree.Guard("isMoleculeIdentified", bb -> bb.store.containsKey("<molecule-id>") && bb.store.get("<molecule-id>") != null),
                                                 new ABehaviourTree.Execute("CollectMolecule", bb -> {
                                                     System.out.println(String.format("CONNECT %s", bb.store.get("<molecule-id>")));
@@ -300,22 +230,22 @@ class Player {
                                         ),
                                         new ABehaviourTree.Sequence("WaitForMolecules",
                                                 new ABehaviourTree.Guard("isThereSpaceForMolecules", bb -> bb.playerAgent.canCarryMoreMolecules()),
-                                                new ABehaviourTree.Guard("ifThereAreNoCompleteSamples", bb -> bb.player.oldSamples.stream().noneMatch(OldSample::isComplete)),
-                                                new ABehaviourTree.Guard("ifEnemyAtLaboratory", bb -> bb.enemy.target.equals("LABORATORY")),
+                                                new ABehaviourTree.Guard("ifThereAreNoCompleteSamples", bb -> !bb.playerAgent.completeSamples.isEmpty()),
+                                                new ABehaviourTree.Guard("ifEnemyAtLaboratory", bb -> bb.enemyAgent.target.equals("LABORATORY")),
                                                 new ABehaviourTree.Execute("WaitForMolecules", bb -> System.out.println("WAIT"))
                                         ),
                                         new ABehaviourTree.Selector("LeaveMolecules",
                                                 new ABehaviourTree.Sequence("GoToLaboratory",
-                                                        new ABehaviourTree.Guard("ifThereAreCompleteSamples", bb -> bb.player.oldSamples.stream().anyMatch(OldSample::isComplete)),
+                                                        new ABehaviourTree.Guard("ifThereAreCompleteSamples", bb -> !bb.playerAgent.completeSamples.isEmpty()),
                                                         new ABehaviourTree.Execute("ExecuteGoto", bb -> System.out.println("GOTO LABORATORY"))
                                                 ),
                                                 new ABehaviourTree.Sequence("GoToSamples",
-                                                        new ABehaviourTree.Guard("ifThereAreNoCompleteSamples", bb -> bb.player.oldSamples.stream().noneMatch(OldSample::isComplete)),
-                                                        new ABehaviourTree.Guard("ifThereIsSpaceForSamples", bb -> bb.player.oldSamples.size() < 3),
+                                                        new ABehaviourTree.Guard("ifThereAreNoCompleteSamples", bb -> bb.playerAgent.completeSamples.isEmpty()),
+                                                        new ABehaviourTree.Guard("ifThereIsSpaceForSamples", bb -> bb.playerAgent.canCarryMoreSamples()),
                                                         new ABehaviourTree.Execute("ExecuteGoto", bb -> System.out.println("GOTO SAMPLES"))
                                                 ),
                                                 new ABehaviourTree.Sequence("GoToDiagnosis",
-                                                        new ABehaviourTree.Guard("isCarryingUndiagnosedSamples", bb -> bb.player.oldSamples.stream().anyMatch(oldSample -> oldSample.cost() < 0)),
+                                                        new ABehaviourTree.Guard("isCarryingUndiagnosedSamples", bb -> !bb.playerAgent.undiagnosedSamples.isEmpty()),
                                                         new ABehaviourTree.Execute("ExecuteGoto", bb -> System.out.println("GOTO DIAGNOSIS"))
                                                 ),
                                                 new ABehaviourTree.Execute("ExecuteWait", bb -> System.out.println("WAIT"))
@@ -323,31 +253,19 @@ class Player {
                                 )
                         ),
                         new ABehaviourTree.Sequence("AtLaboratory",
-                                new ABehaviourTree.Guard("isAtLaboratory", bb -> bb.player.target.equals("LABORATORY")),
+                                new ABehaviourTree.Guard("isAtLaboratory", bb -> bb.playerAgent.target.equals("LABORATORY")),
                                 new ABehaviourTree.Selector("SelectLaboratoryAction",
-                                        new ABehaviourTree.Sequence("CompleteSamples",
-                                                new ABehaviourTree.Guard("ifThereAreCompleteSamples", bb -> bb.player.oldSamples.stream().anyMatch(OldSample::isComplete)),
-                                                new ABehaviourTree.UntilFail<>("EmptyStack", new ABehaviourTree.Pop()),
-                                                new ABehaviourTree.UntilFail<>("AddPlayerCompleteSamplesToStack",
-                                                        new ABehaviourTree.Push(bb -> bb.player.oldSamples.stream()
-                                                                .filter(oldSample -> !bb.stack.contains(oldSample))
-                                                                .filter(OldSample::isComplete)
-                                                                .max(Comparator.comparingInt(oldSample -> oldSample.health))
-                                                        )
-                                                ),
-                                                new ABehaviourTree.Execute("ExecuteConnect", bb -> System.out.println(String.format("CONNECT %s", ((OldSample) bb.stack.peek()).id)))
-                                        ),
                                         new ABehaviourTree.Selector("LeaveLaboratory",
                                                 new ABehaviourTree.Sequence("GoToSamples",
-                                                        new ABehaviourTree.Guard("notCarryingSamples", bb -> bb.player.oldSamples.isEmpty()),
+                                                        new ABehaviourTree.Guard("notCarryingSamples", bb -> bb.playerAgent.carriedSamples().isEmpty()),
                                                         new ABehaviourTree.Execute("ExecuteGoto", bb -> System.out.println("GOTO SAMPLES"))
                                                 ),
                                                 new ABehaviourTree.Sequence("GoToMolecules",
-                                                        new ABehaviourTree.Guard("doesAnySampleNeedMolecules", bb -> bb.player.oldSamples.stream().anyMatch(s -> !s.isComplete())),
+                                                        new ABehaviourTree.Guard("doesAnySampleNeedMolecules", bb -> !bb.playerAgent.incompleteSamples.isEmpty()),
                                                         new ABehaviourTree.Execute("ExecuteGoto", bb -> System.out.println("GOTO MOLECULES"))
                                                 ),
                                                 new ABehaviourTree.Sequence("GoToDiagnosis",
-                                                        new ABehaviourTree.Guard("isCarryingUndiagnosedSamples", bb -> bb.player.oldSamples.stream().anyMatch(oldSample -> oldSample.cost() < 0)),
+                                                        new ABehaviourTree.Guard("isCarryingUndiagnosedSamples", bb -> !bb.playerAgent.undiagnosedSamples.isEmpty()),
                                                         new ABehaviourTree.Execute("ExecuteGoto", bb -> System.out.println("GOTO DIAGNOSIS"))
                                                 )
                                         )
@@ -371,6 +289,7 @@ class Player {
         String target;
         Map<MoleculeType, AtomicInteger> expertise = new HashMap<>();
         Map<MoleculeType, AtomicInteger> futureExpertise = new HashMap<>();
+        List<Sample> undiagnosedSamples = new ArrayList<>();
         List<Sample> incompleteSamples = new ArrayList<>();
         List<Sample> completeSamples = new ArrayList<>();
         Integer eta;
@@ -392,6 +311,18 @@ class Player {
             }
         }
 
+        void collectSample(Sample sample) {
+            if (carriedSamples().contains(sample)) {
+                throw new NullPointerException("already carrying sample");
+            }
+
+            if (sample.isComplete(futureExpertise, expertise)) {
+                completeSamples.add(sample);
+            } else {
+                incompleteSamples.add(sample);
+            }
+        }
+
         void collectMolecule(Sample sample, MoleculeType moleculeType) {
             if (Objects.isNull(sample)) {
                 throw new NullPointerException("samples is null");
@@ -403,17 +334,17 @@ class Player {
                 throw new IllegalStateException("should only collect molecules for incomplete samples");
             }
 
-            if (sample.isComplete()) {
+            if (sample.isComplete(futureExpertise, expertise)) {
                 throw new IllegalStateException("sample is complete but still listed in incomplete samples");
             }
 
             if (!canCarryMoreMolecules()) {
-                throw new IllegalStateException("cannot collect more molecules as player agent if full");
+                throw new IllegalStateException("cannot collect more molecules as player agent is full");
             }
 
-            sample.addMolecule(moleculeType);
+            sample.addMolecule(moleculeType, futureExpertise, expertise);
 
-            if (sample.isComplete()) {
+            if (sample.isComplete(futureExpertise, expertise)) {
                 incompleteSamples.remove(sample);
                 completeSamples.add(sample);
                 futureExpertise.get(sample.expertiseGain).incrementAndGet();
@@ -441,32 +372,58 @@ class Player {
                     .forEach(carriedMolecules::putAll);
             return carriedMolecules;
         }
+
+        void assertCarryingSample(Sample sample) {
+            if (!carriedSamples().contains(sample)) {
+                throw new NullPointerException("agent not carrying sample");
+            }
+        }
+
+        void assertNotCarryingSample(Sample sample) {
+            if (carriedSamples().contains(sample)) {
+                throw new NullPointerException("agent should not be carrying sample");
+            }
+        }
     }
 
-    class Sample {
+    static class EnemyAgent extends PlayerAgent {
+        void carrySampleIfAbsent(Sample sample) {
+            if (!carriedSamples().contains(sample)) {
+                collectSample(sample);
+            }
+        }
+
+        void removeSampleIfPresent(Sample sample) {
+            if (incompleteSamples.contains(sample)) {
+                incompleteSamples.remove(sample);
+            }
+
+            if (completeSamples.contains(sample)) {
+                completeSamples.remove(sample);
+            }
+        }
+    }
+
+    static class Sample {
         final Integer id;
         final Integer rank;
         final Integer health;
         final MoleculeType expertiseGain;
-        final Map<MoleculeType, AtomicInteger> futureExpertise;
-        final Map<MoleculeType, AtomicInteger> expertise;
         final Map<MoleculeType, AtomicInteger> requiredMoleculeBag = new HashMap<>();
         final Map<MoleculeType, AtomicInteger> carriedMoleculeBag = new HashMap<>();
 
-        Sample(Integer id, Integer rank, Integer health, MoleculeType expertiseGain, Map<MoleculeType, AtomicInteger> futureExpertise, Map<MoleculeType, AtomicInteger> expertise) {
+        Sample(Integer id, Integer rank, Integer health, MoleculeType expertiseGain) {
             this.id = id;
             this.rank = rank;
             this.health = health;
             this.expertiseGain = expertiseGain;
-            this.futureExpertise = futureExpertise;
-            this.expertise = expertise;
         }
 
         Integer carriedMoleculeCount() {
             return carriedMoleculeBag.values().stream().mapToInt(AtomicInteger::get).sum();
         }
 
-        Boolean isComplete() {
+        Boolean isComplete(Map<MoleculeType, AtomicInteger> futureExpertise, Map<MoleculeType, AtomicInteger> expertise) {
             return requiredMoleculeBag.entrySet().stream().allMatch(entry -> {
                 MoleculeType type = entry.getKey();
                 Integer requirement = entry.getValue().get();
@@ -479,8 +436,8 @@ class Player {
             });
         }
 
-        void addMolecule(MoleculeType moleculeType) {
-            if (isComplete()) {
+        void addMolecule(MoleculeType moleculeType, Map<MoleculeType, AtomicInteger> futureExpertise, Map<MoleculeType, AtomicInteger> expertise) {
+            if (isComplete(futureExpertise, expertise)) {
                 throw new IllegalStateException("waste detected, about to collect too many molecules for sample");
             }
 
@@ -501,28 +458,42 @@ class Player {
 
         @Override
         public Status process(Blackboard blackboard) {
-            blackboard.player.oldSamples.clear();
-            blackboard.enemy.oldSamples.clear();
-            blackboard.cloud.clear();
             blackboard.store.clear();
 
             return Status.Success;
         }
     }
 
+    static class CloudStorage {
+        Set<Sample> samples = new HashSet<>();
+
+        void storeSampleIfAbsent(Sample sample) {
+            samples.add(sample);
+        }
+
+        void assertNotStoringSample(Sample sample) {
+            if (samples.contains(sample)) {
+                throw new NullPointerException("already storing sample");
+            }
+        }
+
+        void removeSampleIfPresent(Sample sample) {
+            if (samples.contains(sample)) {
+                samples.remove(sample);
+            }
+        }
+    }
 }
 
 class Blackboard {
     List<Player.Project> completeProjects = new ArrayList<>();
     List<Player.Project> incompleteProjects = new ArrayList<>();
+    Player.CloudStorage cloudStorage = new Player.CloudStorage();
     Player.PlayerAgent playerAgent = new Player.PlayerAgent();
+    Player.EnemyAgent enemyAgent = new Player.EnemyAgent();
     Map<Player.MoleculeType, AtomicInteger> moleculePoolMax = new HashMap<>();
     Map<Player.MoleculeType, AtomicInteger> moleculePool = new HashMap<>();
 
-    Bot player = new Bot();
-    Bot enemy = new Bot();
-    List<OldSample> cloud = new ArrayList<>();
-    int sampleCount;
     Map<String, Object> store = new HashMap<>();
     public Stack stack = new Stack();
 
@@ -530,107 +501,6 @@ class Blackboard {
         if (moleculePool.get(moleculeType).get() != count) {
             throw new IllegalStateException("blackboard state does not equal system state");
         }
-    }
-}
-
-class Bot {
-    /* module where the player is */ String target;
-    int eta;
-    /* the player's number of health points */ int score;
-    /* number of A carriedMoleculeBag held by the player */ int storageA;
-    /* number of B carriedMoleculeBag held by the player */ int storageB;
-    /* number of C carriedMoleculeBag held by the player */ int storageC;
-    /* number of D carriedMoleculeBag held by the player */ int storageD;
-    /* number of E carriedMoleculeBag held by the player */ int storageE;
-    int expertiseA;
-    int expertiseB;
-    int expertiseC;
-    int expertiseD;
-    int expertiseE;
-
-    List<OldSample> oldSamples = new ArrayList<>();
-}
-
-class OldSample {
-    Bot owner;
-    Blackboard blackboard;
-    /* unique id for the sample */ int id;
-    /* 0 if the sample is carried by you, 1 by the other robot, -1 if the sample is in the cloud */ int carriedBy;
-    int rank;
-    String expertiseGain;
-    /* number of health points you gain from this sample */ int health;
-    /* number of A carriedMoleculeBag needed to research the sample */ int costA;
-    /* number of B carriedMoleculeBag needed to research the sample */ int costB;
-    /* number of C carriedMoleculeBag needed to research the sample */ int costC;
-    /* number of D carriedMoleculeBag needed to research the sample */ int costD;
-    /* number of E carriedMoleculeBag needed to research the sample */ int costE;
-
-    OldSample(Blackboard blackboard) {
-        this.blackboard = blackboard;
-    }
-
-    int cost() {
-        return costA + costB + costC + costD + costE;
-    }
-
-    int moleculesA;
-    int moleculesB;
-    int moleculesC;
-    int moleculesD;
-    int moleculesE;
-
-    int remainingA() {
-        return Math.max(0, costA - owner.expertiseA - moleculesA);
-    }
-
-    int remainingB() {
-        return Math.max(0, costB - owner.expertiseB - moleculesB);
-    }
-
-    int remainingC() {
-        return Math.max(0, costC - owner.expertiseC - moleculesC);
-    }
-
-    int remainingD() {
-        return Math.max(0, costD - owner.expertiseD - moleculesD);
-    }
-
-    int remainingE() {
-        return Math.max(0, costE - owner.expertiseE - moleculesE);
-    }
-
-    int remaining() {
-        return remainingA() + remainingB() + remainingC() + remainingD() + remainingE();
-    }
-
-    boolean isAComplete() {
-        return remainingA() == 0;
-    }
-
-    boolean isBComplete() {
-        return remainingB() == 0;
-    }
-
-    boolean isCComplete() {
-        return remainingC() == 0;
-    }
-
-    boolean isDComplete() {
-        return remainingD() == 0;
-    }
-
-    boolean isEComplete() {
-        return remainingE() == 0;
-    }
-
-    boolean isComplete() {
-        return isAComplete() && isBComplete() && isCComplete() && isDComplete() && isEComplete();
-    }
-
-    @Override
-    public String toString() {
-        return String.format("#%s { health=%s, recipe={A=%s, B=%s, C=%s, D=%s, E=%s}, remaining={A=%s, B=%s, C=%s, D=%s, E=%s} }",
-                id, health, costA, costB, costC, costD, costE, remainingA(), remainingB(), remainingC(), remainingD(), remainingE());
     }
 }
 
