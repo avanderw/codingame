@@ -1,0 +1,4 @@
+HelpMojo.class
+com\deathpat\codingame\packager\JavaSourcePackager.class
+com\deathpat\codingame\packager\PackagerException.class
+com\deathpat\codingame\packager\MyMojo.class
