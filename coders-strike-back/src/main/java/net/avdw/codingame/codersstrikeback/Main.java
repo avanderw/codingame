@@ -50,7 +50,7 @@ class Player {
                 boost = nextCheckpointDist > 3600 && thrust > 90 && boostCount != 0;
             }
 
-            // target (counteract momentum)
+            // target (counteract inertia)
             int myDiffX = x - prevX;
             int myDiffY = y - prevY;
             int targetX = nextCheckpointX - myDiffX;
