@@ -1,17 +1,18 @@
-# Compiled class file
+#set($hash = '#')
+${hash} Compiled class file
 *.class
 target/
 
-# Log file
+${hash} Log file
 *.log
 
-# BlueJ files
+${hash} BlueJ files
 *.ctxt
 
-# Mobile Tools for Java (J2ME)
+${hash} Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
-# Package Files #
+${hash} Package Files ${hash}
 *.jar
 *.war
 *.nar
@@ -20,9 +21,9 @@ target/
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+${hash} virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-# Editors
+${hash} Editors
 .idea/
 *.iml
