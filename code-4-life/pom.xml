@@ -28,7 +28,6 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <appPackage>net.avdw</appPackage>
                     <mainClass>net.avdw.codingame.code4life.Main</mainClass>
                     <targetClassName>Player</targetClassName>
                     <removeComments>true</removeComments>
