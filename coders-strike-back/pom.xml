@@ -28,8 +28,8 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <appPackage>net.avdw.codingame.samegame</appPackage>
-                    <mainClass>net.avdw.codingame.samegame.Main</mainClass>
+                    <appPackage>net.avdw.codingame</appPackage>
+                    <mainClass>net.avdw.codingame.Player</mainClass>
                     <targetClassName>Player</targetClassName>
                     <removeComments>true</removeComments>
                     <removeEmptyLines>true</removeEmptyLines>

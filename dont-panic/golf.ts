@@ -1,0 +1,1 @@
+var r=readline,i=r().split(' '),e:any={},n=+i[7],x=+i[3],p=+i[4];for(;n--;){var j=r().split(' ');e[+j[0]]=+j[1]}for(;;){var k=r().split(' '),f=+k[0],c=+k[1],t=f==x?p:e[f];console.log(f<0||c==t||(c<t?'RIGHT':'LEFT')==k[2]?'WAIT':'BLOCK')}
